@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import argparse
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from main.solution import CommandExecutor
+
+parser = argparse.ArgumentParser(description="This is a solution suggestion command.")
+
+parser.add_argument("-i", "--input", help="input 'text'.")
+parser.add_argument('-o', '--output', action="store_true", help="add the latest history to your original search dictionary.")
+parser.add_argument("--history", action="store_true", help="show the command history and its results.")
+parser.add_argument("-l", "--list", action="store_true", help="show your original search dictionary.")
+parser.add_argument("-d", "--delete", nargs='?', help="delete a element in your original search dictionary.(e.g. showfix delete 6)")
+parser.add_argument("-c", "--clear", action="store_true", help="clear your history")
+
+args = parser.parse_args()
+
+executor = CommandExecutor()
+
+if args.input:
+    input_data = args.input
+    executor.main(input_data)
+    executor.add_csv()
+elif args.output:
+    executor.out_csv()
+elif args.history:
+    executor.check_history()
+elif args.list:
+    executor.check_list()
+elif args.delete:
+    delete_number = args.delete
+    executor.delete_element(delete_number)
+elif args.clear:
+    executor.clear_history()
+else:
+    print('The usage of the "showfix" command is not appropriate.\nPlease run "showfix -h" to check the correct usage.')
